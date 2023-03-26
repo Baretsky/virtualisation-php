@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-project-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-project-db
+  template:
+    metadata:
+      labels:
+        app: php-project-db
+    spec:
+      containers:
+        - name: db
+          image: baretsky24/php-project-db
+          env:
+            - name: MYSQL_DATABASE
+              value: php_database
+            - name: MYSQL_USER
+              value: me
+            - name: MYSQL_PASSWORD
+              value: password
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+          args: ["--default-authentication-plugin=mysql_native_password"]
+          ports:
+            - containerPort: 3306
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+spec:
+  selector:
+    app: php-project-db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  clusterIP: None

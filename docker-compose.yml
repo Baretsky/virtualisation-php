@@ -1,0 +1,12 @@
+version: '3'
+services:
+  php_web:
+    build: 
+      context: .
+      dockerfile: Dockerfile.php_web
+    ports:
+      - "8080:80"
+  db:
+    build: 
+      context: .
+      dockerfile: Dockerfile.db
